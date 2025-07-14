@@ -1,0 +1,16 @@
+{
+  "name": "goto-ship-checker-netlify",
+  "version": "1.0.0",
+  "description": "Fetches ship status for Goto islands using Netlify Functions.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "node-fetch": "^2.6.7"
+  }
+}
