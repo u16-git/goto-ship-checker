@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 
 const KEYWORDS = [
-    "五島", "福江", "青方", "厳原", "壱岐", "野母商船", "九州商船", 
+    "五島", "福江", "青方", "厳原", "壱岐", "野母商船", "九州商船", "九州郵船",
     "五島産業汽船", "木口汽船", "黄島海運", "五島旅客船"
 ];
 
@@ -21,14 +21,17 @@ exports.handler = async function(event, context) {
 
         const $ = cheerio.load(text);
 
-        $('body').find('br').replaceWith('\\n');
-        const allText = $('body').text();
-        const lines = allText.split('\\n');
+        // bodyのHTMLを取得し、<br>タグで分割する新しいロジック
+        const bodyHtml = $('body').html();
+        // <br>タグを区切り文字として配列に変換
+        const lines = bodyHtml.split(/<br\s*\/?>/i);
         
         let relevantInfo = [];
         
-        for (const line of lines) {
-            const trimmedLine = line.trim();
+        for (const lineHtml of lines) {
+            // 各部分のHTMLからテキストだけを抽出し、前後の空白を削除
+            const trimmedLine = cheerio.load(lineHtml).text().trim();
+            
             if (!trimmedLine) continue;
 
             if (KEYWORDS.some(keyword => trimmedLine.includes(keyword))) {
